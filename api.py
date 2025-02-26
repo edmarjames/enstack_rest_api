@@ -1,17 +1,14 @@
+import os
 import random
 import re
-import os
 
 from dotenv import load_dotenv
 from flask import Flask, jsonify
 from flask_restful import Api, Resource, abort, marshal_with
 from sqlalchemy.orm import load_only
-from models import db, LetterModel
-from utils import (
-    login_args,
-    letter_args,
-    letterFields
-)
+
+from models import LetterModel, db
+from utils import letter_args, letterFields, login_args
 
 load_dotenv()
 app = Flask(__name__)
