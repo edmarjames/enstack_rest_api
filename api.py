@@ -5,28 +5,17 @@ import os
 from dotenv import load_dotenv
 from flask import Flask, jsonify
 from flask_restful import Api, Resource, abort, fields, marshal_with, reqparse
-from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import load_only
+from models import db, LetterModel
 
 load_dotenv()
 app = Flask(__name__)
-# app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///database.db"
-app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL")
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///database.db"
+# app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL")
+# app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
-
-db = SQLAlchemy(app)
+db.init_app(app)
 api = Api(app)
-
-class LetterModel(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    letter = db.Column(db.String(10), unique=True, nullable=False)
-    value = db.Column(db.Integer, nullable=False)
-    strokes = db.Column(db.Integer, nullable=False)
-    vowel = db.Column(db.Boolean, default=False, nullable=False)
-
-    def __repr__(self):
-        return f"{self.letter} - {self.value} - {self.strokes} - {self.vowel}"
 
 letter_args = reqparse.RequestParser()
 letter_args.add_argument("letter", type=str, required=True, help="Letter cannot be blank")
@@ -153,7 +142,7 @@ api.add_resource(Login, "/api/login")
 
 @app.route("/")
 def home():
-    return "<h1>Flask REST API</h1>"
+    return "<h1>Enstack Flask REST API</h1>"
 
 if __name__ == "__main__":
     app.run(debug=True)
