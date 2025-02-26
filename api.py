@@ -12,9 +12,9 @@ from utils import letter_args, letterFields, login_args
 
 load_dotenv()
 app = Flask(__name__)
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///database.db"
-# app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL")
-# app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+# app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///database.db"
+app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL")
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 db.init_app(app)
 api = Api(app)
@@ -129,4 +129,4 @@ def home():
     return "<h1>Enstack Flask REST API</h1>"
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=3000, debug=True)
