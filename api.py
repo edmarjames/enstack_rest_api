@@ -1,10 +1,10 @@
 import random
 import re
-from flask import Flask, jsonify
-from flask_sqlalchemy import SQLAlchemy
-from flask_restful import Resource, Api, reqparse, fields, marshal_with, abort
-from sqlalchemy.orm import load_only
 
+from flask import Flask, jsonify
+from flask_restful import Api, Resource, abort, fields, marshal_with, reqparse
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.orm import load_only
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///database.db"
