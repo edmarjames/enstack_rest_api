@@ -36,8 +36,8 @@ class Login(Resource):
     def post(self):
         args = login_args.parse_args()
 
-        username = args["username"]
-        password = args["password"]
+        username = args["username"].strip()
+        password = args["password"].strip()
 
         if len(username) < 4:
             abort(400, message="Username must be at least 4 characters")
@@ -76,22 +76,27 @@ class AddLetter(Resource):
     def post(self):
         args = letter_args.parse_args()
 
-        existing_letter = LetterModel.query.filter(LetterModel.letter.ilike(args["letter"])).first()
+        letter_input_args = args["letter"].strip()
+        value_args = args["value"]
+        strokes_args = args["strokes"]
+        vowel_args = args["vowel"]
+
+        existing_letter = LetterModel.query.filter(LetterModel.letter.ilike(letter_input_args)).first()
         if existing_letter:
             return {"status": 1}, 400
 
-        existing_value = LetterModel.query.filter_by(value=args["value"]).first()
+        existing_value = LetterModel.query.filter_by(value=value_args).first()
         if existing_value:
             return {"status": 1}, 400
 
-        if args["value"] == args["strokes"]:
+        if value_args == strokes_args:
             return {"status": 1}, 400
 
         letter = LetterModel(
-            letter=args["letter"],
-            value=args["value"],
-            strokes=args["strokes"],
-            vowel=args["vowel"]
+            letter=letter_input_args,
+            value=value_args,
+            strokes=strokes_args,
+            vowel=vowel_args
         )
         db.session.add(letter)
         db.session.commit()
